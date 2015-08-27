@@ -17,12 +17,7 @@ rabbitmq server cluster docker image
 *   dockerfiles/startrabbit.sh:CMD in Dockerfile
 
 *   docker_rabbitmq.sh:start the container  
-    
-    IMAGE=ilegendsoft/rabbitmq-server-cluster
-    
-    docker pull $IMAGE
-    
-    docker run -d -p 5672:5672 -p 15672:15672 -e RABBITMQ_NODENAME=rabbit -e RABBITMQ_SERVER_START_ARGS="-rabbit cluster_nodes {['rabbit@host1','rabbit@host2'],disc}" --name rabbitmq-server-cluster --net="host" $IMAGE
+    `docker run -d -p 5672:5672 -p 15672:15672 -e RABBITMQ_NODENAME=rabbit -e RABBITMQ_SERVER_START_ARGS="-rabbit cluster_nodes {['rabbit@**host1**','rabbit@**host2**'],disc}" --name rabbitmq-server-cluster --net="host" $IMAGE`
 
 
-**host1,host2 are your cluster node hostname, maybe more than two.**
+**host1,host2 are your cluster node hostname, you can add more than two.**
