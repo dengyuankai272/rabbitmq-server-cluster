@@ -2,7 +2,7 @@
 rabbitmq server cluster docker image
 
 ## introduction
->This is a project about how to build a rabbitmq cluster docker image.
+This is a project about how to build a rabbitmq cluster docker image.
 
 ## how to use it
 *   ensure you have installed docker
