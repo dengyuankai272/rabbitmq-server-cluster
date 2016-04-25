@@ -113,7 +113,7 @@ RabbitMQ集群对于网络分区的处理和忍受能力不太好，推荐使用
 
 更多性能参数见：[http://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/](http://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/)
 
-如果有兴趣简单了解下RabbitMQ的简单介绍，可以继续往下看～
+如果有兴趣简单了解下RabbitMQ，可以继续往下看～
 
 # <a name="other" /> 简介
 
