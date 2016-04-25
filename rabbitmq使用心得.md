@@ -9,34 +9,34 @@ RabbitMQ提供了几种特性，牺牲了一点性能代价，提供了可靠性
 
 *	持久化  
 当RabbitMQ退出时，默认会将消息和队列都清除，所以需要在**第一次**声明队列和发送消息时指定其持久化属性为true，这样RabbitMQ会将队列、消息和状态存到RabbitMQ本地的数据库，重启后会恢复。  
-java：
+java:  
 
 		durable=true   
-		channel.queueDeclare("task_queue", durable, false, false, null);//队列  
+		channel.queueDeclare("task_queue", durable, false, false, null); // 队列  
 		channel.basicPublish("", "task_queue",
             MessageProperties.PERSISTENT_TEXT_PLAIN,
-            message.getBytes());//消息
+            message.getBytes()); // 消息
 
 注：当声明的队列已经存在时，尝试重新定义它的durable是不生效的。
 
 *	接收应答  
 客户端接收消息的模式默认是自动应答，但是通过设置autoAck为false可以让客户端主动应答消息。当客户端拒绝此消息或者未应答便断开连接时，就会使得此消息重新入队（在版本2.7.0以前是到重新加入到队尾，2.7.0及以后是保留消息在队列中的原来位置）。  
-java：
+java: 
 
 		autoAck = false;
 		requeue = true;
 		channel.basicConsume(queue, autoAck, callback);
 		channel.basicAck();//应答
-		channel.basicReject(deliveryTag, requeue);//拒绝
-		channel.basicRecover(requeue);//恢复
+		channel.basicReject(deliveryTag, requeue); // 拒绝
+		channel.basicRecover(requeue); // 恢复
 
 *	发送确认  
 默认情况下，发送端不关注发出去的消息是否被消费掉了。可设置channel为confirm模式，所有发送的消息都会被确认一次，用户可以自行根据server发回的确认消息查看状态。详细介绍见：[confirms](http://www.rabbitmq.com/confirms.html)  
 java:  
 
 		channel.confirmSelect(); // 进入confirm模式
-		do publish messages... // 每个消息都会被编号，从1开始
-		channel.getNextPublishSeqNo() // 查看下一个要发送的消息的序号
+		// do publish messages... 每条消息都会被编号，从1开始
+		channel.getNextPublishSeqNo() // 查看下一条要发送的消息的序号
 		channel.waitForConfirms(); // 等待所有消息发送并确认 
 
 *	事务：和confirm模式不能同时使用，而且会带来大量的多余开销，导致吞吐量下降很多，故而不推荐。  
@@ -44,7 +44,7 @@ java:
 
 		channel.txSelect();
 		try {
-			do something...
+			// do something...
 			channel.txCommit();
 		} catch (e){
 			channel.txRollback();
@@ -52,7 +52,7 @@ java:
 
 *	<a name="ha" />  消息队列的高可用（主备模式）  
 相比于路由和绑定，可以视为是共享于所有的节点的，消息队列默认只存在于第一次声明它的节点上，这样一旦这个节点挂了，这个队列中未处理的消息就没有了。
-幸好，RabbitMQ提供了将它备份到其他节点的机制，任何时候都有一个master负责处理请求，其他slaves负责备份，当master挂掉，会将最早创建的那个slave提升为master。  
+<br>幸好，RabbitMQ提供了将它备份到其他节点的机制，任何时候都有一个master负责处理请求，其他slaves负责备份，当master挂掉，会将最早创建的那个slave提升为master。  
 命令：  
 `rabbitmqctl set_policy ha-all "^ha\." '{"ha-mode":"all"}'`：设置所有以'ha'开头的queue在所有节点上拥有备份。[详细语法点这里](http://www.rabbitmq.com/ha.html)；
 也可以在界面上配置。  
@@ -70,16 +70,16 @@ java:
 *	集群配置：  
 一个集群中多个节点共享一份.erlang.cookie文件；若是没有启用RABBITMQ_USE_LONGNAME，需要在每个节点的hosts文件中指定其他节点的地址，不然会找不到其他集群中的节点。
 
-*	<a name="cluster_partion"  /> 脑裂：  
+*	<a name="cluster_partion"  /> 脑裂（网络分区）：  
 RabbitMQ集群对于网络分区的处理和忍受能力不太好，推荐使用[federation](#federation)或者shovel插件去解决。  
 <br>但是，情况已经发生了，怎么去解决呢？放心，还是有办法恢复的。  
 <br>当网络断断续续时，会使得节点之间的通信断掉，进而造成集群被分隔开的情况。  
 <br>这样，每个小集群之后便只处理各自本地的连接和消息，从而导致数据不同步。当重新恢复网络连接时，它们彼此都认为是对方挂了-_-||，便可以判断出有网络分区出现了。但是RabbitMQ默认是忽略掉不处理的，造成两个节点继续各自为政（路由，绑定关系，队列等可以独立地创建删除，甚至主备队列也会每一方拥有自己的master）。  
 <br>可以更改配置使得连接恢复时，会根据配置自动恢复：  
 
-	*	ignore: 默认，不做任何处理
+	*	ignore：默认，不做任何处理
 	*	pause-minority：断开连接时，判断当前节点是否属于少数派（节点数少于或者等于一半），如果是，则暂停直到恢复连接。
-	*	{pause_if_all_down, [nodes], ignore | autoheal}: 断开连接时，判断当前集群中节点是否有节点在nodes中，如果有，则继续运行，否则暂停直到恢复连接。这种策略下，当恢复连接时，可能会有多个分区存活，所以，最后一个参数决定它们怎么合并。
+	*	{pause_if_all_down, [nodes], ignore | autoheal}：断开连接时，判断当前集群中节点是否有节点在nodes中，如果有，则继续运行，否则暂停直到恢复连接。这种策略下，当恢复连接时，可能会有多个分区存活，所以，最后一个参数决定它们怎么合并。
 	*	autoheal：当恢复连接时，选择客户端连接数最多的节点状态为主，重启其他节点。
 
 配置：[集群配置](#cluster)
