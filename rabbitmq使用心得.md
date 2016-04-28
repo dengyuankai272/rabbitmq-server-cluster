@@ -1,6 +1,6 @@
 ![cover](http://i.niupic.com/images/2016/04/28/h7FUPX.png)  
 
-# RabbitMQ使用心得
+# RabbitMQ在分布式系统中的应用
 
 由于之前做的项目中需要在多个节点之间**可靠地**通信，所以废弃了之前使用的Redis pub/sub（因为集群有单点问题，且有诸多限制），改用了RabbitMQ。  
 使用期间得到不少收获，也踩了不少坑，所以在此分享下心得。（简单了解下RabbitMQ? [点这里](#other)）
