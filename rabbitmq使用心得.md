@@ -63,7 +63,7 @@ java:
 
 *	顺序保证  
 直接上图好了：  
-![seq](http://i.niupic.com/images/2016/04/28/LKjLIk.png)  
+![seq](http://i.niupic.com/images/2016/04/28/XP0Ytd.png)  
 
 ### 一些需要注意的地方
 
@@ -109,7 +109,7 @@ RabbitMQ集群对于网络分区的处理和忍受能力不太好，推荐使用
 
 最后附一张网上截取的测试结果:  
 
-![performance](http://i.niupic.com/images/2016/04/28/XP0Ytd.png)  
+![performance](http://i.niupic.com/images/2016/04/28/LKjLIk.png)  
 
 更多性能参数见：[http://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/](http://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/)
 
