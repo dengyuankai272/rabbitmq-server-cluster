@@ -1,4 +1,4 @@
-![cover](imgs/message-chains-1.png)  
+![cover](http://i.niupic.com/images/2016/04/28/h7FUPX.png)  
 
 # RabbitMQ使用心得
 
@@ -63,7 +63,7 @@ java:
 
 *	顺序保证  
 直接上图好了：  
-![seq](imgs/seq.png)  
+![seq](http://i.niupic.com/images/2016/04/28/LKjLIk.png)  
 
 ### 一些需要注意的地方
 
@@ -109,7 +109,7 @@ RabbitMQ集群对于网络分区的处理和忍受能力不太好，推荐使用
 
 最后附一张网上截取的测试结果:  
 
-![performance](imgs/performance.png)  
+![performance](http://i.niupic.com/images/2016/04/28/XP0Ytd.png)  
 
 更多性能参数见：[http://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/](http://www.rabbitmq.com/blog/2012/04/25/rabbitmq-performance-measurements-part-2/)
 
@@ -144,7 +144,7 @@ RabbitMQ官方实现了很多热门语言的客户端，就不一一列举啦，
 
 *	一对一：一个生产者，一个消费者  
 
-![1](imgs/1.png)  
+![1](http://i.niupic.com/images/2016/04/28/LtXqHP.png)  
 
 生产者：  
 
@@ -165,7 +165,7 @@ RabbitMQ官方实现了很多热门语言的客户端，就不一一列举啦，
 
 *	一对多：一个生产者，多个消费者  
 
-![workqueue](imgs/workqueue.png)  
+![workqueue](http://i.niupic.com/images/2016/04/28/EStI0Y.png)  
 
 代码同上，只不过会有多个消费者，消息会轮序发给各个消费者。  
 如果设置了autoAck=false，那么可以实现公平分发（即对于某个特定的消费者，每次最多只发送指定条数的消息，直到其中一条消息应答后，再发送下一条）。需要在消费者中加上:  
@@ -176,7 +176,7 @@ RabbitMQ官方实现了很多热门语言的客户端，就不一一列举啦，
 
 *	广播  
 
-![broadcast](imgs/broadcast.png)  
+![broadcast](http://i.niupic.com/images/2016/04/28/dsCXhW.png)  
 
 生产者：  
 
@@ -189,7 +189,7 @@ RabbitMQ官方实现了很多热门语言的客户端，就不一一列举啦，
 
 *	Routing: 指定路由规则  
 
-![routing](imgs/routing.png)  
+![routing](http://i.niupic.com/images/2016/04/28/tfJp31.png)  
 
 生产者：  
 
@@ -200,7 +200,7 @@ RabbitMQ官方实现了很多热门语言的客户端，就不一一列举啦，
 
 *	Topics: 支持通配符的Routing  
 
-![topics](imgs/topics.png)  
+![topics](http://i.niupic.com/images/2016/04/28/385ueW.png)  
 
 	*可以表示一个单词
 	#可以表示一个或多个单词
@@ -214,7 +214,7 @@ RabbitMQ官方实现了很多热门语言的客户端，就不一一列举啦，
 
 *	RPC  
 
-![rpc](imgs/rpc.png)  
+![rpc](http://i.niupic.com/images/2016/04/28/9pia7x.png)  
 
 其实就是一对一模式的一种用法：  
 首先，客户端发送一条消息到服务端声明的队列，消息属性中包含reply_to和correlation_id  
@@ -296,7 +296,7 @@ RabbitMQ原生支持AMQP 0-9-1并扩展实现了了一些常用的功能：[AMQP
 *	会话层：将命令从客户端传递给服务器，再将服务器的应答传递给客户端，会话层为这个传递过程提供可靠性、同步机制和错误处理。
 *	传输层：主要传输二进制数据流，提供帧的处理、信道复用、错误检测和数据表示。  
 
-![](imgs/amqp.png)  
+![](http://i.niupic.com/images/2016/04/28/rIGHEs.png)  
 
 注：其他协议的支持见：[RabbitMQ支持的协议](http://www.rabbitmq.com/protocols.html)
 
@@ -306,7 +306,7 @@ RabbitMQ原生支持AMQP 0-9-1并扩展实现了了一些常用的功能：[AMQP
 启动后，执行`rabbitmq-plugins enable rabbitmq_management`->
 访问[http://localhost:15672](http://localhost:15672)->查看节点状态，队列信息等等，甚至可以动态配置消息队列的主备策略，如下图：  
 
-![management](imgs/management.png)  
+![management](http://i.niupic.com/images/2016/04/28/LR6Bxu.png)  
 
 #### <a name="federation"/> Federation  
 
@@ -334,8 +334,8 @@ RabbitMQ原生支持AMQP 0-9-1并扩展实现了了一些常用的功能：[AMQP
 *	通过max_hops参数控制传递层数。 
 *	模拟集群，可以将多个节点两两互连，并设置max_hops=1。  
 
-![federated_cluster](imgs/federated_cluster.png)  
-![federated_broadcast](imgs/federated_broadcast.png)  
+![federated_cluster](http://i.niupic.com/images/2016/04/28/Y4oKST.png)  
+![federated_broadcast](http://i.niupic.com/images/2016/04/28/uNI97v.png)  
 
 `rabbitmq-plugins enable rabbitmq_federation`  
 如果启用了管理界面，可以添加：  
